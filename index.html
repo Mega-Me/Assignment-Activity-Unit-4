@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkblue;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .error {
+            margin-top: 20px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Temperature Converter</h1>
+        <input type="text" id="temperatureInput" placeholder="Enter temperature">
+        <select id="temperatureUnit">
+            <option value="celsius">Celsius to Fahrenheit</option>
+            <option value="fahrenheit">Fahrenheit to Celsius</option>
+        </select>
+        <button id="convertButton">Convert</button>
+        <div class="result" id="conversionResult"></div>
+        <div class="error" id="errorMessage"></div>
+    </div>
+
+    <script>
+        // Add event listener to the button
+        document.getElementById('convertButton').addEventListener('click', handleTemperatureConversion);
+
+        function handleTemperatureConversion() {
+            // Get user input
+            const inputTemperature = parseFloat(document.getElementById('temperatureInput').value);
+            const selectedUnit = document.getElementById('temperatureUnit').value;
+            const resultDisplay = document.getElementById('conversionResult');
+            const errorDisplay = document.getElementById('errorMessage');
+
+            // Clear previous results and errors
+            resultDisplay.textContent = '';
+            errorDisplay.textContent = '';
+
+            // Validate input
+            if (isNaN(inputTemperature)) {
+                errorDisplay.textContent = 'Please enter a valid number.';
+                return;
+            }
+
+            // Check for absolute zero
+            if (selectedUnit === 'celsius' && inputTemperature < -273.15) {
+                errorDisplay.textContent = 'Temperature cannot be below absolute zero (-273.15°C).';
+                return;
+            }
+            if (selectedUnit === 'fahrenheit' && inputTemperature < -459.67) {
+                errorDisplay.textContent = 'Temperature cannot be below absolute zero (-459.67°F).';
+                return;
+            }
+
+            // Convert temperature
+            let convertedTemperature;
+            if (selectedUnit === 'celsius') {
+                convertedTemperature = (inputTemperature * 9/5) + 32; // Celsius to Fahrenheit
+                resultDisplay.textContent = `${inputTemperature}°C is ${convertedTemperature.toFixed(2)}°F`;
+            } else {
+                convertedTemperature = (inputTemperature - 32) * 5/9; // Fahrenheit to Celsius
+                resultDisplay.textContent = `${inputTemperature}°F is ${convertedTemperature.toFixed(2)}°C`;
+            }
+        }
+    </script>
+</body>
+</html>
